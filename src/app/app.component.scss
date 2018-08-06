@@ -28,6 +28,10 @@ $avatar-color: #FFF;
   }
 }
 
+.sidenav-button {
+  display: none;
+}
+
 .sidenav-content {
   height: 100%;
 }
@@ -68,6 +72,8 @@ hr {
 }
 
 .search-col {
+  visibility: hidden;
+
   line-height: 62px;
   text-align: center;
 }

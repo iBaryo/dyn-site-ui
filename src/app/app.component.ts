@@ -52,13 +52,13 @@ import { NewMessageComponent } from './new-message/new-message.component';
       </mat-sidenav>
       <div class="sidenav-content">
         <mat-toolbar color="primary" role="header" fxLayout="row" class="primary-toolbar">
-          <div fxFlex="50px">
+          <div class="sidenav-button" fxFlex="50px">
             <button type="button" class="menu-btn" mat-icon-button (click)="sidenav.open()">
               <mat-icon>menu</mat-icon>
             </button>
           </div>
           <div fxFlex="100px">
-            Inbox
+            Site Wizard
           </div>
           <div fxFlex fxFill class="search-col">
             <input type="text" class="search-bar" placeholder="Search..." />
@@ -66,14 +66,14 @@ import { NewMessageComponent } from './new-message/new-message.component';
           </div>
           <div fxFlex="200px" class="avatar-col">
             <span class="avatar accent-1 large">
-              AM
+              DM
             </span>
           </div>
         </mat-toolbar>
         <content>
           <mat-list>
             <mat-list-item class="category-title">
-              Today
+              Features
             </mat-list-item>
             <mat-list-item *ngFor="let message of messages; let i = index;">
               <app-message
@@ -87,6 +87,38 @@ import { NewMessageComponent } from './new-message/new-message.component';
               </app-message>
             </mat-list-item>
           </mat-list>
+          <mat-list>
+              <mat-list-item class="category-title">
+                  Backend
+              </mat-list-item>
+              <mat-list-item *ngFor="let message of messages; let i = index;">
+                  <app-message
+                          [avatar]="message.avatar"
+                          [from]="message.from"
+                          [subject]="message.subject"
+                          [body]="message.body"
+                          [recieved]="message.recieved"
+                          (removed)="onRemove(i)"
+                          (reply)="onNewMessage($event)">
+                  </app-message>
+              </mat-list-item>
+          </mat-list>
+          <mat-list>
+                <mat-list-item class="category-title">
+                    Frontend
+                </mat-list-item>
+                <mat-list-item *ngFor="let message of messages; let i = index;">
+                    <app-message
+                            [avatar]="message.avatar"
+                            [from]="message.from"
+                            [subject]="message.subject"
+                            [body]="message.body"
+                            [recieved]="message.recieved"
+                            (removed)="onRemove(i)"
+                            (reply)="onNewMessage($event)">
+                    </app-message>
+                </mat-list-item>
+            </mat-list>
         </content>
         <button
           mat-fab

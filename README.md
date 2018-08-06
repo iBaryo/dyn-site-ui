@@ -1,9 +1,4 @@
-# Material Inbox
-
-![img](/docs/screenshot.png)
-
-Material Inbox is a example project based on Angular and Angular Material.
-
+# Dyn Site Creator UI
 ## Getting Started
 To run the project locally, follow the steps below.
 
