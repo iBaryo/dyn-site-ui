@@ -15,11 +15,13 @@ import {
     JsonEndpointNode
 } from 'express-dynamic-components';
 import {INodeEditor} from './editors/interfaces';
+import {CodeEditorComponent} from "./editors/code-editor/code-editor.component";
 
 export interface INodeTypeInfo {
     alignment: (keyof INodeTypes) | 'error';
     componentType: ICodeComponentType<any>;
     editorType: Type<INodeEditor>;
+    editorOptions?: any;
 }
 
 export interface IAlignments<T> {
@@ -40,7 +42,7 @@ export class NodeTypesService {
     };
 
     constructor() {
-        this.add('backend', ServerCodeComponent, null);
+        this.add('backend', ServerCodeComponent, CodeEditorComponent, {defaultTemplate: `(app) => {\n\t\n}`});
         this.add('backend', JsonEndpointComponent, null);
         this.add('backend', HtmlPageComponent, null);
 
@@ -86,7 +88,7 @@ fetch('${this._endpointName}'+location.search)
         }, null);
     }
 
-    public add(alignment: keyof INodeTypes, cmpType: ICodeComponentType<any>, editorType: Type<any>) {
+    public add(alignment: keyof INodeTypes, cmpType: ICodeComponentType<any>, editorType: Type<any>, editorOptions?: any) {
         const componentFactory = this.getFactory(alignment);
         let componentType = componentFactory.get(cmpType.typeName);
 
@@ -100,7 +102,8 @@ fetch('${this._endpointName}'+location.search)
         this._types[alignment].set(componentType.typeName, {
             alignment,
             componentType,
-            editorType
+            editorType,
+            editorOptions
         });
     }
 

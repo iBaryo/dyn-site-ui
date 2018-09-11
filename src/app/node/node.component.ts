@@ -137,7 +137,9 @@ export class NodeComponent implements OnInit {
 
         const cmpFactory = this.componentFactoryResolver.resolveComponentFactory(this.nodeInfo.editorType);
         const cmpRef = this.editorHost.viewContainerRef.createComponent(cmpFactory);
-        cmpRef.instance.node = this.node;
+        const cmp = cmpRef.instance;
+        cmp.node = this.node;
+        cmp.options = this.nodeInfo.editorOptions;
     }
 
     onOpenToggle(): void {

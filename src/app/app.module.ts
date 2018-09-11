@@ -19,6 +19,7 @@ import {NodesService} from './nodes.service';
 import {NodeTypesService} from './node-types.service';
 import { EditorHostDirective } from './editor-host.directive';
 import { ErrorEditorComponent } from './editors/error-editor/error-editor.component';
+import { CodeEditorComponent } from './editors/code-editor/code-editor.component';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { ErrorEditorComponent } from './editors/error-editor/error-editor.compon
         NodeComponent,
         NewMessageComponent,
         EditorHostDirective,
-        ErrorEditorComponent
+        ErrorEditorComponent,
+        CodeEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -54,7 +56,8 @@ import { ErrorEditorComponent } from './editors/error-editor/error-editor.compon
     ],
     entryComponents: [
         NewMessageComponent,
-        ErrorEditorComponent
+        ErrorEditorComponent,
+        CodeEditorComponent
     ],
     providers: [
         {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},

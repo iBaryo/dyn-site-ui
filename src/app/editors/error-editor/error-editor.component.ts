@@ -9,6 +9,7 @@ import {CodeNode} from 'express-dynamic-components';
 })
 export class ErrorEditorComponent implements OnInit, INodeEditor {
     public node: CodeNode;
+    public options: any;
 
     constructor() {
     }
