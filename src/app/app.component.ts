@@ -1,168 +1,150 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { messages } from './data';
-import { NewMessageComponent } from './new-message/new-message.component';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {CodeNode} from 'express-dynamic-components';
+import {NewMessageComponent} from './new-message/new-message.component';
+import {NodesService} from './nodes.service';
+import {IAlignments, NodeTypesService} from './node-types.service';
 
 @Component({
-  selector: 'app-root',
-  template: `
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #sidenav class="sidenav-nav">
-        <mat-list>
-          <mat-list-item>
-            <button mat-button routerLink="/" routerLinkActive>
-              <mat-icon>inbox</mat-icon>
-              Inbox
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button routerLink="/snoozed" routerLinkActive>
-              <mat-icon>alarm</mat-icon>
-              Snoozed
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button routerLink="/done" routerLinkActive>
-              <mat-icon>done</mat-icon>
-              Done
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <hr />
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button routerLink="/drafts" routerLinkActive>
-              <mat-icon>drafts</mat-icon>
-              Drafts
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button routerLink="/sent" routerLinkActive>
-              <mat-icon>send</mat-icon>
-              Sent
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button routerLink="/spam" routerLinkActive>
-              <mat-icon>report_problem</mat-icon>
-              Spam
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </mat-sidenav>
-      <div class="sidenav-content">
-        <mat-toolbar color="primary" role="header" fxLayout="row" class="primary-toolbar">
-          <div class="sidenav-button" fxFlex="50px">
-            <button type="button" class="menu-btn" mat-icon-button (click)="sidenav.open()">
-              <mat-icon>menu</mat-icon>
-            </button>
-          </div>
-          <div fxFlex="100px">
-            Site Wizard
-          </div>
-          <div fxFlex fxFill class="search-col">
-            <input type="text" class="search-bar" placeholder="Search..." />
-            <mat-slide-toggle class="pin-toggle"></mat-slide-toggle>
-          </div>
-          <div fxFlex="200px" class="avatar-col">
+    selector: 'app-root',
+    template: `
+        <mat-sidenav-container class="sidenav-container">
+            <mat-sidenav #sidenav class="sidenav-nav">
+                <mat-list>
+                    <mat-list-item>
+                        <button mat-button routerLink="/" routerLinkActive>
+                            <mat-icon>inbox</mat-icon>
+                            Inbox
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button mat-button routerLink="/snoozed" routerLinkActive>
+                            <mat-icon>alarm</mat-icon>
+                            Snoozed
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button mat-button routerLink="/done" routerLinkActive>
+                            <mat-icon>done</mat-icon>
+                            Done
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <hr/>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button mat-button routerLink="/drafts" routerLinkActive>
+                            <mat-icon>drafts</mat-icon>
+                            Drafts
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button mat-button routerLink="/sent" routerLinkActive>
+                            <mat-icon>send</mat-icon>
+                            Sent
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button mat-button routerLink="/spam" routerLinkActive>
+                            <mat-icon>report_problem</mat-icon>
+                            Spam
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+            </mat-sidenav>
+            <div class="sidenav-content">
+                <mat-toolbar color="primary" role="header" fxLayout="row" class="primary-toolbar">
+                    <div class="sidenav-button" fxFlex="50px">
+                        <button type="button" class="menu-btn" mat-icon-button (click)="sidenav.open()">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                    </div>
+                    <div fxFlex="100px">
+                        Site Wizard
+                    </div>
+                    <div fxFlex fxFill class="search-col">
+                        <input type="text" class="search-bar" placeholder="Search..."/>
+                        <mat-slide-toggle class="pin-toggle"></mat-slide-toggle>
+                    </div>
+                    <div fxFlex="200px" class="avatar-col">
             <span class="avatar accent-1 large">
               DM
             </span>
-          </div>
-        </mat-toolbar>
-        <content>
-          <mat-list>
-            <mat-list-item class="category-title">
-              Features
-            </mat-list-item>
-            <mat-list-item *ngFor="let message of messages; let i = index;">
-              <app-message
-                [avatar]="message.avatar"
-                [from]="message.from"
-                [subject]="message.subject"
-                [body]="message.body"
-                [recieved]="message.recieved"
-                (removed)="onRemove(i)"
-                (reply)="onNewMessage($event)">
-              </app-message>
-            </mat-list-item>
-          </mat-list>
-          <mat-list>
-              <mat-list-item class="category-title">
-                  Backend
-              </mat-list-item>
-              <mat-list-item *ngFor="let message of messages; let i = index;">
-                  <app-message
-                          [avatar]="message.avatar"
-                          [from]="message.from"
-                          [subject]="message.subject"
-                          [body]="message.body"
-                          [recieved]="message.recieved"
-                          (removed)="onRemove(i)"
-                          (reply)="onNewMessage($event)">
-                  </app-message>
-              </mat-list-item>
-          </mat-list>
-          <mat-list>
-                <mat-list-item class="category-title">
-                    Frontend
-                </mat-list-item>
-                <mat-list-item *ngFor="let message of messages; let i = index;">
-                    <app-message
-                            [avatar]="message.avatar"
-                            [from]="message.from"
-                            [subject]="message.subject"
-                            [body]="message.body"
-                            [recieved]="message.recieved"
-                            (removed)="onRemove(i)"
-                            (reply)="onNewMessage($event)">
-                    </app-message>
-                </mat-list-item>
-            </mat-list>
-        </content>
-        <button
-          mat-fab
-          color="accent"
-          class="new-fab"
-          (click)="onNewMessage()"
-          matTooltip="New Message"
-          matTooltipPosition="before">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
-    </mat-sidenav-container>
-  `,
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./app.component.scss']
+                    </div>
+                </mat-toolbar>
+                <content>
+                    <mat-list>
+                        <mat-list-item class="category-title">
+                            Features
+                        </mat-list-item>
+                        <mat-list-item *ngFor="let node of nodes.features; let i = index;">
+                            <app-node
+                                    [node]="node"
+                                    (removed)="onRemove('features', i)"
+                                    (reply)="onNewMessage($event)">
+                            </app-node>
+                        </mat-list-item>
+                    </mat-list>
+                    <mat-list>
+                        <mat-list-item class="category-title">
+                            Backend
+                        </mat-list-item>
+                        <mat-list-item *ngFor="let node of nodes.backend; let i = index;">
+                            <app-node
+                                    [node]="node"
+                                    (removed)="onRemove('backend', i)"
+                                    (reply)="onNewMessage($event)">
+                            </app-node>
+                        </mat-list-item>
+                    </mat-list>
+                </content>
+                <button
+                        mat-fab
+                        color="accent"
+                        class="new-fab"
+                        (click)="onNewMessage()"
+                        matTooltip="New Message"
+                        matTooltipPosition="before">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </mat-sidenav-container>
+    `,
+    encapsulation: ViewEncapsulation.None,
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
-  messages = messages;
+    public nodes: IAlignments<CodeNode[]>;
 
-  constructor(
-      private snackBar: MatSnackBar,
-      private dialog: MatDialog) {}
+    constructor(private snackBar: MatSnackBar,
+                private dialog: MatDialog,
+                nodesService: NodesService,
+                nodeTypesService: NodeTypesService) {
+        const codeNodes = nodesService.getNodes().code;
+        this.nodes = nodeTypesService.align(codeNodes);
+    }
 
-  onRemove(index: number): void {
-    const copy = [...this.messages];
-    copy.splice(index, 1);
-    this.messages = copy;
-  }
+    onRemove(alignment: keyof IAlignments<CodeNode[]>, index: number): void {
+        const copy = [...this.nodes[alignment]];
+        copy.splice(index, 1);
+        this.nodes[alignment] = copy;
+    }
 
-  onNewMessage(data: any = {}): void {
-    const dialogRef = this.dialog.open(NewMessageComponent, {
-      width: '75%',
-      panelClass: 'new-message-dialog',
-      data
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.snackBar.open('Email sent!', null, {
-          duration: 2000
+    onNewMessage(data: any = {}): void {
+        const dialogRef = this.dialog.open(NewMessageComponent, {
+            width: '75%',
+            panelClass: 'new-node-dialog',
+            data
         });
-      }
-    });
-  }
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.snackBar.open('Email sent!', null, {
+                    duration: 2000
+                });
+            }
+        });
+    }
 
 }

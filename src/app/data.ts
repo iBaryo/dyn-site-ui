@@ -1,10 +1,12 @@
+
+
 export const messages = [
-  {
-    recieved: new Date(),
-    avatar: 'A',
-    from: 'Austin McDaniel',
-    subject: 'Angular is a open-source framework for building web applications',
-    body: `
+    {
+        recieved: new Date(),
+        avatar: 'A',
+        from: 'Austin McDaniel',
+        subject: 'Angular is a open-source framework for building web applications',
+        body: `
       <p>Learn one way to build applications with Angular and reuse your code and abilities to build
       apps for any deployment target. For web, mobile web, native mobile and native desktop.
       Learn one way to build applications with Angular and reuse your code and abilities to build
@@ -21,13 +23,13 @@ export const messages = [
       Angular puts you in control over scalability. Meet huge data requirements by building data
       models on RxJS, Immutable.js or another push-model.</p>
     `
-  },
-  {
-    recieved: new Date(),
-    avatar: 'J',
-    from: 'Jeremy Elbourn',
-    subject: 'Angular Material is a open-source UI framework based on Material design spec',
-    body: `
+    },
+    {
+        recieved: new Date(),
+        avatar: 'J',
+        from: 'Jeremy Elbourn',
+        subject: 'Angular Material is a open-source UI framework based on Material design spec',
+        body: `
       <p>Learn one way to build applications with Angular and reuse your code and abilities to build
       apps for any deployment target. For web, mobile web, native mobile and native desktop.</p>
 
@@ -36,5 +38,5 @@ export const messages = [
       <p>Angular puts you in control over scalability. Meet huge data requirements by building data
       models on RxJS, Immutable.js or another push-model.</p>
     `
-  }
+    }
 ];
