@@ -1,6 +1,12 @@
-import {Component, HostBinding, ViewEncapsulation, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {
+    Component, HostBinding, ViewEncapsulation, Input, Output, EventEmitter, OnInit, ViewChild,
+    ComponentFactoryResolver
+} from '@angular/core';
 import {CodeNode} from 'express-dynamic-components';
 import {NodeTypesService, INodeTypeInfo} from '../node-types.service';
+import {EditorHostDirective} from "../editor-host.directive";
+import {INodeEditor} from "../editors/interfaces";
+import {ErrorEditorComponent} from "../editors/error-editor/error-editor.component";
 
 @Component({
     selector: 'app-node',
@@ -89,7 +95,7 @@ import {NodeTypesService, INodeTypeInfo} from '../node-types.service';
                                 </button>
                             </mat-menu>
                         </div>
-                        <div #editorContainer></div>
+                        <ng-template appEditorHost></ng-template>
                     </div>
                 </div>
             </mat-expansion-panel>
@@ -107,10 +113,13 @@ export class NodeComponent implements OnInit {
 
     public nodeInfo: INodeTypeInfo;
 
+    @ViewChild(EditorHostDirective) public editorHost: EditorHostDirective;
+
     @Output() removed = new EventEmitter<void>();
     @Output() reply = new EventEmitter<{ to: string, subject: string }>();
 
-    constructor(private _editorsService: NodeTypesService) {
+    constructor(private _editorsService: NodeTypesService,
+                private componentFactoryResolver: ComponentFactoryResolver) {
 
     }
 
@@ -121,9 +130,14 @@ export class NodeComponent implements OnInit {
             this.nodeInfo = {
                 alignment: 'error',
                 componentType: null,
-                editorType: null // todo: error editor
+                editorType: ErrorEditorComponent
             };
         }
+        this.nodeInfo.editorType = this.nodeInfo.editorType || ErrorEditorComponent;
+
+        const cmpFactory = this.componentFactoryResolver.resolveComponentFactory(this.nodeInfo.editorType);
+        const cmpRef = this.editorHost.viewContainerRef.createComponent(cmpFactory);
+        cmpRef.instance.node = this.node;
     }
 
     onOpenToggle(): void {

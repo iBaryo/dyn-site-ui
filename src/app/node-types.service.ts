@@ -14,11 +14,12 @@ import {
     FeatureComponent,
     JsonEndpointNode
 } from 'express-dynamic-components';
+import {INodeEditor} from './editors/interfaces';
 
 export interface INodeTypeInfo {
     alignment: (keyof INodeTypes) | 'error';
     componentType: ICodeComponentType<any>;
-    editorType: Type<any>;
+    editorType: Type<INodeEditor>;
 }
 
 export interface IAlignments<T> {

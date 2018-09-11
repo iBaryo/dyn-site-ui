@@ -16,13 +16,17 @@ import {NodeComponent} from './node/node.component';
 import {NewMessageComponent} from './new-message/new-message.component';
 import {routes} from './app.routes';
 import {NodesService} from './nodes.service';
-import {NodeTypesService} from "./node-types.service";
+import {NodeTypesService} from './node-types.service';
+import { EditorHostDirective } from './editor-host.directive';
+import { ErrorEditorComponent } from './editors/error-editor/error-editor.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NodeComponent,
-        NewMessageComponent
+        NewMessageComponent,
+        EditorHostDirective,
+        ErrorEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -49,7 +53,8 @@ import {NodeTypesService} from "./node-types.service";
         MatSlideToggleModule
     ],
     entryComponents: [
-        NewMessageComponent
+        NewMessageComponent,
+        ErrorEditorComponent
     ],
     providers: [
         {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},
