@@ -45,13 +45,13 @@ export class NodeTypesService {
     };
 
     constructor() {
-        this.add('backend', ServerCodeComponent, CodeEditorComponent, {defaultTemplate: `async (app) => {\n\t\n}`});
-        this.add('backend', JsonEndpointComponent, undefined);
+        this.add('backend', ServerCodeComponent, CodeEditorComponent, {defaultTemplate: `async (app, config) => {\n\t\n}`});
+        this.add('backend', JsonEndpointComponent, CodeEditorComponent, {defaultTemplate: `async (req, config) => {\n\t\n}`});
         this.add('backend', HtmlPageComponent, undefined);
 
-        this.add('frontend', DomComponent, undefined);
+        this.add('frontend', DomComponent, CodeEditorComponent, {defaultTemplate: `<div></div>`});
         this.add('frontend', ScriptTagComponent, undefined);
-        this.add('frontend', ScopedScriptComponent, undefined);
+        this.add('frontend', ScopedScriptComponent, CodeEditorComponent, {defaultTemplate: `async (config) => {\n\t\n}`});
 
         this.add('features', class MyFeature extends FeatureComponent {
             public static get typeName() {
