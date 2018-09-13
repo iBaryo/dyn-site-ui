@@ -3,10 +3,10 @@ import {
     ComponentFactoryResolver
 } from '@angular/core';
 import {CodeNode} from 'express-dynamic-components';
-import {NodeTypesService, INodeTypeInfo} from '../node-types.service';
+import {NodeTypesService, INodeTypeInfo, IEditorInfo} from '../node-types.service';
 import {EditorHostDirective} from "../editor-host.directive";
 import {INodeEditor} from "../editors/interfaces";
-import {ErrorEditorComponent} from "../editors/error-editor/error-editor.component";
+import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor/error-editor.component";
 
 @Component({
     selector: 'app-node',
@@ -119,27 +119,33 @@ export class NodeComponent implements OnInit {
     @Output() reply = new EventEmitter<{ to: string, subject: string }>();
 
     constructor(private _editorsService: NodeTypesService,
-                private componentFactoryResolver: ComponentFactoryResolver) {
+                private _componentFactoryResolver: ComponentFactoryResolver) {
 
     }
 
     ngOnInit(): void {
         this.nodeInfo = this._editorsService.get(this.node.type);
 
-        if (!this.nodeInfo) {
-            this.nodeInfo = {
-                alignment: 'error',
-                componentType: null,
-                editorType: ErrorEditorComponent
-            };
+        try {
+            this.showEditor(this.node, this.nodeInfo);
+        } catch (error) {
+            this.showEditor(this.node, {
+                editorType: ErrorEditorComponent,
+                editorOptions: {error}
+            } as IEditorInfo<IErrorEditorOptions>);
         }
-        this.nodeInfo.editorType = this.nodeInfo.editorType || ErrorEditorComponent;
+    }
 
-        const cmpFactory = this.componentFactoryResolver.resolveComponentFactory(this.nodeInfo.editorType);
+    private showEditor<T>(node: CodeNode, editorInfo: IEditorInfo<T>) {
+        if (!editorInfo || !editorInfo.editorType) {
+            throw new Error(`missing editor type`);
+        }
+        const cmpFactory = this._componentFactoryResolver.resolveComponentFactory(editorInfo.editorType);
+        this.editorHost.viewContainerRef.clear();
         const cmpRef = this.editorHost.viewContainerRef.createComponent(cmpFactory);
         const cmp = cmpRef.instance;
-        cmp.node = this.node;
-        cmp.options = this.nodeInfo.editorOptions;
+        cmp.node = node;
+        cmp.options = editorInfo.editorOptions;
     }
 
     onOpenToggle(): void {

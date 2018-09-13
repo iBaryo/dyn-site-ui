@@ -15,13 +15,16 @@ import {
     JsonEndpointNode
 } from 'express-dynamic-components';
 import {INodeEditor} from './editors/interfaces';
-import {CodeEditorComponent} from "./editors/code-editor/code-editor.component";
+import {CodeEditorComponent} from './editors/code-editor/code-editor.component';
 
-export interface INodeTypeInfo {
-    alignment: (keyof INodeTypes) | 'error';
+export interface IEditorInfo<T> {
+    editorType: Type<INodeEditor<T>>;
+    editorOptions?: T;
+}
+
+export interface INodeTypeInfo extends IEditorInfo<any> {
+    alignment: keyof INodeTypes;
     componentType: ICodeComponentType<any>;
-    editorType: Type<INodeEditor>;
-    editorOptions?: any;
 }
 
 export interface IAlignments<T> {
@@ -42,13 +45,13 @@ export class NodeTypesService {
     };
 
     constructor() {
-        this.add('backend', ServerCodeComponent, CodeEditorComponent, {defaultTemplate: `(app) => {\n\t\n}`});
-        this.add('backend', JsonEndpointComponent, null);
-        this.add('backend', HtmlPageComponent, null);
+        this.add('backend', ServerCodeComponent, CodeEditorComponent, {defaultTemplate: `async (app) => {\n\t\n}`});
+        this.add('backend', JsonEndpointComponent, undefined);
+        this.add('backend', HtmlPageComponent, undefined);
 
-        this.add('frontend', DomComponent, null);
-        this.add('frontend', ScriptTagComponent, null);
-        this.add('frontend', ScopedScriptComponent, null);
+        this.add('frontend', DomComponent, undefined);
+        this.add('frontend', ScriptTagComponent, undefined);
+        this.add('frontend', ScopedScriptComponent, undefined);
 
         this.add('features', class MyFeature extends FeatureComponent {
             public static get typeName() {
@@ -85,7 +88,7 @@ fetch('${this._endpointName}'+location.search)
                     }
                 }
             }
-        }, null);
+        }, undefined);
     }
 
     public add(alignment: keyof INodeTypes, cmpType: ICodeComponentType<any>, editorType: Type<any>, editorOptions?: any) {

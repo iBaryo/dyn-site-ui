@@ -1,6 +1,6 @@
 import {CodeNode} from 'express-dynamic-components';
 
-export interface INodeEditor {
+export interface INodeEditor<T> {
     node: CodeNode;
-    options: any;
+    options: T;
 }
