@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
     MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule,
     MATERIAL_COMPATIBILITY_MODE, MatCardModule, MatMenuModule, MatTooltipModule,
@@ -20,6 +20,7 @@ import {NodeTypesService} from './node-types.service';
 import { EditorHostDirective } from './editor-host.directive';
 import { ErrorEditorComponent } from './editors/error-editor/error-editor.component';
 import { CodeEditorComponent } from './editors/code-editor/code-editor.component';
+import {MonacoEditorModule} from "ngx-monaco-editor";
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { CodeEditorComponent } from './editors/code-editor/code-editor.component
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        FormsModule,
         ReactiveFormsModule,
         RouterModule.forRoot(routes, {
             useHash: false
@@ -52,7 +54,8 @@ import { CodeEditorComponent } from './editors/code-editor/code-editor.component
         MatInputModule,
         MatSnackBarModule,
         MatExpansionModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MonacoEditorModule // use forRoot() in main app module only.
     ],
     entryComponents: [
         NewMessageComponent,

@@ -15,9 +15,12 @@ export class CodeEditorComponent implements OnInit, INodeEditor<ICodeEditorOptio
     public node: CodeNode;
     public options: ICodeEditorOptions;
 
+    public editorOptions = {theme: 'vs-dark', language: 'javascript'};
+
     constructor() {
     }
 
     ngOnInit() {
+        this.node.code = this.node.code || this.options.defaultTemplate;
     }
 }
