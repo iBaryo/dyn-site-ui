@@ -20,8 +20,9 @@ import {NodeTypesService} from './node-types.service';
 import { EditorHostDirective } from './editor-host.directive';
 import { ErrorEditorComponent } from './editors/error-editor/error-editor.component';
 import { CodeEditorComponent } from './editors/code-editor/code-editor.component';
-import {MonacoEditorModule} from "ngx-monaco-editor";
+import {MonacoEditorModule} from 'ngx-monaco-editor';
 import { NodesListComponent } from './nodes-list/nodes-list.component';
+import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-editor.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { NodesListComponent } from './nodes-list/nodes-list.component';
         EditorHostDirective,
         ErrorEditorComponent,
         CodeEditorComponent,
-        NodesListComponent
+        NodesListComponent,
+        HtmlPageEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -62,7 +64,8 @@ import { NodesListComponent } from './nodes-list/nodes-list.component';
     entryComponents: [
         NewMessageComponent,
         ErrorEditorComponent,
-        CodeEditorComponent
+        CodeEditorComponent,
+        HtmlPageEditorComponent
     ],
     providers: [
         {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},

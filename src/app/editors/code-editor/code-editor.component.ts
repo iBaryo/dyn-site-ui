@@ -2,8 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {INodeEditor} from '../interfaces';
 import {CodeNode} from 'express-dynamic-components';
 
-interface ICodeEditorOptions {
+export interface ICodeEditorOptions {
     defaultTemplate: string;
+    theme?: string;
+    language?: string;
 }
 
 @Component({
@@ -15,12 +17,12 @@ export class CodeEditorComponent implements OnInit, INodeEditor<ICodeEditorOptio
     public node: CodeNode;
     public options: ICodeEditorOptions;
 
-    public editorOptions = {theme: 'vs-dark', language: 'javascript'};
-
     constructor() {
     }
 
     ngOnInit() {
+        this.options.theme = this.options.theme || 'vs-dark';
+        this.options.language = this.options.language || 'javascript';
         this.node.code = this.node.code || this.options.defaultTemplate;
     }
 }

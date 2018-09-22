@@ -24,7 +24,20 @@ export class NodesService {
                 {
                     type: 'html',
                     desc: 'a nice page',
-                    code: ''
+                    head: [
+                        {
+                            type: 'dom',
+                            desc: 'a dom element',
+                            code: `<div></div>`
+                        }
+                    ],
+                    body: [
+                        {
+                            type: 'script',
+                            desc: 'a dom script tag',
+                            code: `async (config) => 'console.log("hello");'`
+                        }
+                    ]
                 },
                 {
                     type: 'my-feature',

@@ -15,7 +15,8 @@ import {
     JsonEndpointNode
 } from 'express-dynamic-components';
 import {INodeEditor} from './editors/interfaces';
-import {CodeEditorComponent} from './editors/code-editor/code-editor.component';
+import {CodeEditorComponent, ICodeEditorOptions} from './editors/code-editor/code-editor.component';
+import {HtmlPageEditorComponent} from './editors/html-page-editor/html-page-editor.component';
 
 export interface IEditorInfo<T> {
     editorType: Type<INodeEditor<T>>;
@@ -45,13 +46,24 @@ export class NodeTypesService {
     };
 
     constructor() {
-        this.add('backend', ServerCodeComponent, CodeEditorComponent, {defaultTemplate: `async (app, config) => {\n\t\n}`});
-        this.add('backend', JsonEndpointComponent, CodeEditorComponent, {defaultTemplate: `async (req, config) => {\n\t\n}`});
-        this.add('backend', HtmlPageComponent, undefined);
+        this.add('backend', ServerCodeComponent, CodeEditorComponent, {
+            defaultTemplate: `async (app, config) => {\n\t\n}`
+        } as ICodeEditorOptions);
+        this.add('backend', JsonEndpointComponent, CodeEditorComponent, {
+            defaultTemplate: `async (req, config) => {\n\t\n}`
+        } as ICodeEditorOptions);
+        this.add('backend', HtmlPageComponent, HtmlPageEditorComponent);
 
-        this.add('frontend', DomComponent, CodeEditorComponent, {defaultTemplate: `<div></div>`});
-        this.add('frontend', ScriptTagComponent, undefined);
-        this.add('frontend', ScopedScriptComponent, CodeEditorComponent, {defaultTemplate: `async (config) => {\n\t\n}`});
+        this.add('frontend', DomComponent, CodeEditorComponent, {
+            defaultTemplate: `<div></div>`,
+            language: 'html'
+        } as ICodeEditorOptions);
+        this.add('frontend', ScriptTagComponent, CodeEditorComponent, {
+            defaultTemplate: 'console.log("hello world");'
+        } as ICodeEditorOptions);
+        this.add('frontend', ScopedScriptComponent, CodeEditorComponent, {
+            defaultTemplate: `async (config) => {\n\t\n}`
+        } as ICodeEditorOptions);
 
         this.add('features', class MyFeature extends FeatureComponent {
             public static get typeName() {
@@ -86,7 +98,7 @@ fetch('${this._endpointName}'+location.search)
                             }
                         ]
                     }
-                }
+                };
             }
         }, undefined);
     }
