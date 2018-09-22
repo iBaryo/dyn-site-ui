@@ -31,37 +31,9 @@ import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor
                             {{node.desc}}
                         </div>
                         <div fxFlex="15%" class="btn-col">
-                            <button
-                                    [matMenuTriggerFor]="snoozeMenu"
-                                    mat-icon-button
-                                    matTooltip="Remind Me..."
-                                    matTooltipPosition="above">
-                                <mat-icon>alarm</mat-icon>
-                            </button>
-                            <mat-menu class="snooze-menu" #snoozeMenu="matMenu" [overlapTrigger]="false"
-                                      xPosition="before">
-                                <h3>Snooze until...</h3>
-                                <hr/>
-                                <button mat-menu-item>
-                                    <mat-icon>brightness_6</mat-icon>
-                                    Later Today
-                                </button>
-                                <button mat-menu-item>
-                                    <mat-icon>brightness_5</mat-icon>
-                                    Tomorrow
-                                </button>
-                                <button mat-menu-item>
-                                    <mat-icon>today</mat-icon>
-                                    Later this week
-                                </button>
-                            </mat-menu>
                             <button mat-icon-button (click)="removed.emit()" matTooltip="Delete"
                                     matTooltipPosition="above">
                                 <mat-icon>delete</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="removed.emit()" matTooltip="Done"
-                                    matTooltipPosition="above">
-                                <mat-icon>done</mat-icon>
                             </button>
                         </div>
                     </div>
@@ -116,7 +88,6 @@ export class NodeComponent implements OnInit {
     @ViewChild(EditorHostDirective) public editorHost: EditorHostDirective;
 
     @Output() removed = new EventEmitter<void>();
-    @Output() reply = new EventEmitter<{ to: string, subject: string }>();
 
     constructor(private _editorsService: NodeTypesService,
                 private _componentFactoryResolver: ComponentFactoryResolver) {
@@ -150,12 +121,5 @@ export class NodeComponent implements OnInit {
 
     onOpenToggle(): void {
         this.opened = !this.opened;
-    }
-
-    onReply(): void {
-        this.reply.emit({
-            // to: this.from,
-            // subject: `RE: ${this.subject}`
-        } as any);
     }
 }
