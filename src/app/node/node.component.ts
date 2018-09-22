@@ -20,9 +20,9 @@ import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor
                             fxLayoutAlign="start center"
                             fxLayout="row">
                         <div fxFlex="50px" [fxShow]="!opened">
-              <span class="avatar accent-1">
-                {{nodeInfo.alignment[0].toUpperCase()}}
-              </span>
+                          <span class="avatar accent-1">
+                            {{nodeInfo.alignment[0].toUpperCase()}}
+                          </span>
                         </div>
                         <div fxFlex="20%" [fxShow]="!opened">
                             {{node.type}}
@@ -40,9 +40,9 @@ import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor
                 </mat-expansion-panel-header>
                 <div class="message-body" fxLayout="row">
                     <div fxFlex="50px">
-              <span class="avatar accent-1 large">
-                {{nodeInfo.alignment[0].toUpperCase()}}
-              </span>
+                      <span class="avatar accent-1 large">
+                        {{nodeInfo.alignment[0].toUpperCase()}}
+                      </span>
                     </div>
                     <div fxFlex>
                         <div class="message-body-toolbar">
@@ -54,16 +54,7 @@ import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor
                                       xPosition="before">
                                 <button mat-menu-item (click)="onReply()">
                                     <mat-icon>reply</mat-icon>
-                                    Reply
-                                </button>
-                                <button mat-menu-item (click)="onReply()">
-                                    <mat-icon>forward</mat-icon>
-                                    Forward
-                                </button>
-                                <hr/>
-                                <button mat-menu-item>
-                                    <mat-icon>print</mat-icon>
-                                    Print
+                                    Duplicate
                                 </button>
                             </mat-menu>
                         </div>
