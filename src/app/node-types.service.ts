@@ -165,4 +165,8 @@ fetch('${this._endpointName}'+location.search)
 
         return nodes;
     }
+
+    public hasFeatures() {
+        return this._types.features.size > 0;
+    }
 }
