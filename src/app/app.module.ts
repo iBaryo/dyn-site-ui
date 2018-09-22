@@ -21,6 +21,7 @@ import { EditorHostDirective } from './editor-host.directive';
 import { ErrorEditorComponent } from './editors/error-editor/error-editor.component';
 import { CodeEditorComponent } from './editors/code-editor/code-editor.component';
 import {MonacoEditorModule} from "ngx-monaco-editor";
+import { NodesListComponent } from './nodes-list/nodes-list.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import {MonacoEditorModule} from "ngx-monaco-editor";
         NewMessageComponent,
         EditorHostDirective,
         ErrorEditorComponent,
-        CodeEditorComponent
+        CodeEditorComponent,
+        NodesListComponent
     ],
     imports: [
         BrowserModule,

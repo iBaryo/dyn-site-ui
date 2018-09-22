@@ -73,30 +73,8 @@ import {IAlignments, NodeTypesService} from './node-types.service';
                     </div>
                 </mat-toolbar>
                 <content>
-                    <mat-list>
-                        <mat-list-item class="category-title">
-                            Features
-                        </mat-list-item>
-                        <mat-list-item *ngFor="let node of nodes.features; let i = index;">
-                            <app-node
-                                    [node]="node"
-                                    (removed)="onRemove('features', i)"
-                                    (reply)="onNewMessage($event)">
-                            </app-node>
-                        </mat-list-item>
-                    </mat-list>
-                    <mat-list>
-                        <mat-list-item class="category-title">
-                            Backend
-                        </mat-list-item>
-                        <mat-list-item *ngFor="let node of nodes.backend; let i = index;">
-                            <app-node
-                                    [node]="node"
-                                    (removed)="onRemove('backend', i)"
-                                    (reply)="onNewMessage($event)">
-                            </app-node>
-                        </mat-list-item>
-                    </mat-list>
+                    <app-nodes-list [title]="Features" [nodes]="alignedNodes.features"></app-nodes-list>
+                    <app-nodes-list [title]="Backend" [nodes]="alignedNodes.backend"></app-nodes-list>
                 </content>
                 <button
                         mat-fab
@@ -115,36 +93,13 @@ import {IAlignments, NodeTypesService} from './node-types.service';
 })
 export class AppComponent {
 
-    public nodes: IAlignments<CodeNode[]>;
+    public alignedNodes: IAlignments<CodeNode[]>;
 
     constructor(private snackBar: MatSnackBar,
                 private dialog: MatDialog,
                 nodesService: NodesService,
                 nodeTypesService: NodeTypesService) {
         const codeNodes = nodesService.getNodes().code;
-        this.nodes = nodeTypesService.align(codeNodes);
+        this.alignedNodes = nodeTypesService.align(codeNodes);
     }
-
-    onRemove(alignment: keyof IAlignments<CodeNode[]>, index: number): void {
-        const copy = [...this.nodes[alignment]];
-        copy.splice(index, 1);
-        this.nodes[alignment] = copy;
-    }
-
-    onNewMessage(data: any = {}): void {
-        const dialogRef = this.dialog.open(NewMessageComponent, {
-            width: '75%',
-            panelClass: 'new-node-dialog',
-            data
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.snackBar.open('Email sent!', null, {
-                    duration: 2000
-                });
-            }
-        });
-    }
-
 }
