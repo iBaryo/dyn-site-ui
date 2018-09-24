@@ -1,12 +1,26 @@
 <mat-list>
-  <mat-list-item class="category-title">
-    {{title}}
-  </mat-list-item>
-  <mat-list-item *ngFor="let node of nodes; let i = index;">
-    <app-node
-            [node]="node"
-            (removed)="onRemove(i)"
-            (reply)="onNewMessage($event)">
-    </app-node>
-  </mat-list-item>
+    <mat-list-item class="category-title">
+        <button mat-mini-fab
+                color="none"
+                (click)="onNewMessage()"
+                matTooltip="New Component"
+                matTooltipPosition="before">
+            <mat-icon>add</mat-icon>
+        </button>
+        <span class="category-title-text">
+            {{title}}
+        </span>
+    </mat-list-item>
+    <mat-list-item *ngFor="let node of nodes; let i = index;">
+        <app-node
+                [node]="node"
+                (removed)="onRemove(i)"
+                (reply)="onNewMessage($event)">
+        </app-node>
+    </mat-list-item>
+    <mat-list-item *ngIf="!nodes.length">
+        <mat-card>
+            No Components
+        </mat-card>
+    </mat-list-item>
 </mat-list>

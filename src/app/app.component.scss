@@ -57,7 +57,11 @@ content {
   color: #616161;
   line-height: 24px;
   margin: 20px 0 8px;
-  padding: 0 24px;
+
+  .category-title-text {
+    vertical-align: super;
+    margin-left: 8px
+  }
 }
 
 hr {
@@ -65,7 +69,7 @@ hr {
   border-bottom: none;
 }
 
-.new-fab.mat-fab {
+.new-fab.mat-mini-fab {
   position: absolute;
   right: 25px;
   bottom: 25px;

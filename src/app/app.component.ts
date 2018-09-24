@@ -76,15 +76,6 @@ import {IAlignments, NodeTypesService} from './node-types.service';
                     <app-nodes-list *ngIf="showFeatures" [title]="'Features'" [nodes]="alignedNodes.features"></app-nodes-list>
                     <app-nodes-list [title]="'Backend'" [nodes]="alignedNodes.backend"></app-nodes-list>
                 </content>
-                <button
-                        mat-fab
-                        color="accent"
-                        class="new-fab"
-                        (click)="onNewMessage()"
-                        matTooltip="New Message"
-                        matTooltipPosition="before">
-                    <mat-icon>add</mat-icon>
-                </button>
             </div>
         </mat-sidenav-container>
     `,
