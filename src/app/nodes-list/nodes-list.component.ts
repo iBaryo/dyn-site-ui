@@ -23,18 +23,21 @@ export class NodesListComponent implements OnInit {
 
     onRemove(index: number): void {
         this.nodes.splice(index, 1);
+        this.snackBar.open('Component deleted', null, {
+            duration: 2000
+        });
     }
 
-    onNewMessage(data: any = {}): void {
+    onNewComponent(data: any = {}): void {
         const dialogRef = this.dialog.open(NewMessageComponent, {
             width: '75%',
-            panelClass: 'new-node-dialog',
+            panelClass: 'new-message-dialog',
             data
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.snackBar.open('Email sent!', null, {
+                this.snackBar.open('Component added', null, {
                     duration: 2000
                 });
             }

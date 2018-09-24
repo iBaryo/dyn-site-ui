@@ -11,7 +11,7 @@ const COMMA = 188;
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="new-message-toolbar" mat-dialog-title>
-      <mat-icon>drafts</mat-icon>
+      <mat-icon>extension</mat-icon>
       <button mat-icon-button mat-dialog-close>
         <mat-icon>clear</mat-icon>
       </button>
