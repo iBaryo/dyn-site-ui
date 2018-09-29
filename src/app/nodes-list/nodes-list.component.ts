@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CodeNode} from 'express-dynamic-components';
-import {NewMessageComponent} from '../new-message/new-message.component';
+import {NewNodeComponent} from '../new-node/new-node.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {INodeTypes} from '../node-types.service';
 
@@ -31,7 +31,7 @@ export class NodesListComponent implements OnInit {
     }
 
     onNewComponent(): void {
-        const dialogRef = this.dialog.open(NewMessageComponent, {
+        const dialogRef = this.dialog.open(NewNodeComponent, {
             width: '75%',
             panelClass: 'new-message-dialog',
             data: {alignment: this.alignment}

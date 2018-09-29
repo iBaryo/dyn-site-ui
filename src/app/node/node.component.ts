@@ -3,10 +3,7 @@ import {
     ComponentFactoryResolver
 } from '@angular/core';
 import {CodeNode} from 'express-dynamic-components';
-import {NodeTypesService, INodeTypeInfo, IEditorInfo} from '../node-types.service';
-import {EditorHostDirective} from "../editor-host.directive";
-import {INodeEditor} from "../editors/interfaces";
-import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor/error-editor.component";
+import {NodeTypesService, INodeTypeInfo} from '../node-types.service';
 
 @Component({
     selector: 'app-node',
@@ -25,7 +22,7 @@ import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor
                           </span>
                         </div>
                         <div fxFlex="70%" [fxShow]="!opened">
-                            {{node.desc}}
+                            {{node.desc || 'no description'}}
                         </div>
                         <div fxFlex fxFill class="message-subject">
                             {{node.type}}

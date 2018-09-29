@@ -10,7 +10,7 @@ import {NodeEditorComponent} from '../node-editor/node-editor.component';
 const COMMA = 188;
 
 @Component({
-    selector: 'app-new-message',
+    selector: 'app-new-node',
     encapsulation: ViewEncapsulation.None,
     template: `
         <div class="new-message-toolbar" mat-dialog-title>
@@ -30,14 +30,14 @@ const COMMA = 188;
             <app-node-editor #nodeEditor [hidden]="!node.type" [node]="node"></app-node-editor>
         </mat-dialog-content>
         <mat-dialog-actions>
-            <button mat-raised-button color="primary" [mat-dialog-close]="true">
+            <button mat-raised-button color="primary" [mat-dialog-close]="true" [disabled]="!node.type">
                 Create
             </button>
         </mat-dialog-actions>
     `,
-    styleUrls: ['./new-message.component.scss']
+    styleUrls: ['./new-node.component.scss']
 })
-export class NewMessageComponent implements OnInit {
+export class NewNodeComponent implements OnInit {
     public componentTypeNames: string[];
     public node: CodeNode;
     @ViewChild('nodeEditor') public nodeEditor: NodeEditorComponent;

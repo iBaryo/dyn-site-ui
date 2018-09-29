@@ -14,7 +14,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {AppComponent} from './app.component';
 import {NodeComponent} from './node/node.component';
-import {NewMessageComponent} from './new-message/new-message.component';
+import {NewNodeComponent} from './new-node/new-node.component';
 import {routes} from './app.routes';
 import {NodesService} from './nodes.service';
 import {NodeTypesService} from './node-types.service';
@@ -30,7 +30,7 @@ import { NodeEditorComponent } from './node-editor/node-editor.component';
     declarations: [
         AppComponent,
         NodeComponent,
-        NewMessageComponent,
+        NewNodeComponent,
         EditorHostDirective,
         ErrorEditorComponent,
         CodeEditorComponent,
@@ -66,7 +66,7 @@ import { NodeEditorComponent } from './node-editor/node-editor.component';
         MonacoEditorModule // use forRoot() in main app module only.
     ],
     entryComponents: [
-        NewMessageComponent,
+        NewNodeComponent,
         ErrorEditorComponent,
         CodeEditorComponent,
         HtmlPageEditorComponent

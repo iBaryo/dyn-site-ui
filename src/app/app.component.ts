@@ -1,7 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {CodeNode} from 'express-dynamic-components';
-import {NewMessageComponent} from './new-message/new-message.component';
 import {NodesService} from './nodes.service';
 import {IAlignments, NodeTypesService} from './node-types.service';
 
