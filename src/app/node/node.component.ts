@@ -18,7 +18,7 @@ import {NodeTypesService, INodeTypeInfo} from '../node-types.service';
                             fxLayout="row">
                         <div fxFlex="50px" [fxShow]="!opened">
                           <span class="avatar accent-1">
-                            {{nodeInfo.alignment[0].toUpperCase()}}
+                            {{node.type[0].toUpperCase()}}
                           </span>
                         </div>
                         <div fxFlex="70%" [fxShow]="!opened">
@@ -38,7 +38,7 @@ import {NodeTypesService, INodeTypeInfo} from '../node-types.service';
                 <div class="message-body" fxLayout="row">
                     <div fxFlex="50px">
                       <span class="avatar accent-1 large">
-                        {{nodeInfo.alignment[0].toUpperCase()}}
+                        {{node.type[0].toUpperCase()}}
                       </span>
                     </div>
                     <app-node-editor fxFlex [node]="node"></app-node-editor>
