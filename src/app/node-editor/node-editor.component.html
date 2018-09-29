@@ -1,0 +1,14 @@
+  <div class="message-body-toolbar">
+    <span class="message-to">{{node.desc}}</span>
+    <button style="display: none" mat-icon-button class="message-more" [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu class="message-more-menu" #menu="matMenu" [overlapTrigger]="false"
+              xPosition="before">
+      <button mat-menu-item (click)="onReply()">
+        <mat-icon>reply</mat-icon>
+        Duplicate
+      </button>
+    </mat-menu>
+  </div>
+  <ng-template appEditorHost></ng-template>

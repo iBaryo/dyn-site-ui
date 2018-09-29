@@ -23,6 +23,7 @@ import { CodeEditorComponent } from './editors/code-editor/code-editor.component
 import {MonacoEditorModule} from 'ngx-monaco-editor';
 import { NodesListComponent } from './nodes-list/nodes-list.component';
 import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-editor.component';
+import { NodeEditorComponent } from './node-editor/node-editor.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-ed
         ErrorEditorComponent,
         CodeEditorComponent,
         NodesListComponent,
-        HtmlPageEditorComponent
+        HtmlPageEditorComponent,
+        NodeEditorComponent
     ],
     imports: [
         BrowserModule,
