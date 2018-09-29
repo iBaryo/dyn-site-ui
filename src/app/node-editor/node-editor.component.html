@@ -1,5 +1,7 @@
   <div class="message-body-toolbar">
-    <span class="message-to">{{node.desc}}</span>
+    <mat-form-field class="subject-input">
+      <input matInput placeholder="Description" [(ngModel)]="node.desc" />
+    </mat-form-field>
     <button style="display: none" mat-icon-button class="message-more" [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
