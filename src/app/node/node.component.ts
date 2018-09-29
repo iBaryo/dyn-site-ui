@@ -44,7 +44,7 @@ import {ErrorEditorComponent, IErrorEditorOptions} from "../editors/error-editor
                         {{nodeInfo.alignment[0].toUpperCase()}}
                       </span>
                     </div>
-                    <app-node-editor fxFlex [node]="node" [nodeInfo]="nodeInfo"></app-node-editor>
+                    <app-node-editor fxFlex [node]="node"></app-node-editor>
                 </div>
             </mat-expansion-panel>
         </mat-card>

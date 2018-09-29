@@ -7,7 +7,8 @@ import {
     MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule,
     MATERIAL_COMPATIBILITY_MODE, MatCardModule, MatMenuModule, MatTooltipModule,
     MatDialogModule, MatChipsModule, MatAutocompleteModule, MatFormFieldModule,
-    MatInputModule, MatSnackBarModule, MatSlideToggleModule, MatExpansionModule
+    MatInputModule, MatSnackBarModule, MatSlideToggleModule, MatExpansionModule,
+    MatSelectModule
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
@@ -61,6 +62,7 @@ import { NodeEditorComponent } from './node-editor/node-editor.component';
         MatSnackBarModule,
         MatExpansionModule,
         MatSlideToggleModule,
+        MatSelectModule,
         MonacoEditorModule // use forRoot() in main app module only.
     ],
     entryComponents: [

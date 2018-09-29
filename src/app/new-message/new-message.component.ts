@@ -1,125 +1,62 @@
-import { Component, ViewEncapsulation, ViewChild, Inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent, MAT_DIALOG_DATA, MatAutocompleteSelectedEvent } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
+import {Component, ViewEncapsulation, ViewChild, Inject, Input, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent, MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatSelectChange} from '@angular/material';
+import {Observable} from 'rxjs/Observable';
+import {INodeTypeInfo, INodeTypes, NodeTypesService} from '../node-types.service';
+import {CodeNode} from 'express-dynamic-components';
+import {NodeEditorComponent} from '../node-editor/node-editor.component';
 
 const COMMA = 188;
 
 @Component({
-  selector: 'app-new-message',
-  encapsulation: ViewEncapsulation.None,
-  template: `
-    <div class="new-message-toolbar" mat-dialog-title>
-      <mat-icon>extension</mat-icon>
-      <button mat-icon-button mat-dialog-close>
-        <mat-icon>clear</mat-icon>
-      </button>
-    </div>
-    <mat-dialog-content class="new-message-content">
-      <mat-form-field class="recipients-list">
-        <mat-chip-list #chipList>
-          <mat-chip
-            *ngFor="let recipient of recipients"
-            [selectable]="true"
-            [removable]="true"
-            (remove)="removeRecipient(recipient)">
-            {{recipient}}
-            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-          </mat-chip>
-          <input
-            placeholder="To"
-            matInput
-            #recipientInput
-            [formControl]="recipientsCtrl"
-            [matAutocomplete]="auto"
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="false"
-            (matChipInputTokenEnd)="addRecipient($event)"
-          />
-        </mat-chip-list>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-          <mat-option *ngFor="let option of filteredContacts | async" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field class="subject-input">
-        <input matInput placeholder="Subject" [formControl]="subjectCtrl" />
-      </mat-form-field>
-      <mat-form-field class="body-input">
-        <textarea matInput placeholder="Body" [formControl]="bodyCtrl" rows="15"></textarea>
-      </mat-form-field>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-raised-button color="primary" [mat-dialog-close]="true">
-        Send
-      </button>
-    </mat-dialog-actions>
-  `,
-  styleUrls: ['./new-message.component.scss']
+    selector: 'app-new-message',
+    encapsulation: ViewEncapsulation.None,
+    template: `
+        <div class="new-message-toolbar" mat-dialog-title>
+            <mat-icon>extension</mat-icon>
+            <button mat-icon-button mat-dialog-close>
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+        <mat-dialog-content class="new-message-content">
+            <mat-form-field class="recipients-list">
+                <mat-select (valueChange)="onChange($event)" placeholder="Component Type">
+                    <mat-option *ngFor="let type of componentTypeNames" [value]="type">
+                        {{type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <app-node-editor #nodeEditor [hidden]="!node.type" [node]="node"></app-node-editor>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button mat-raised-button color="primary" [mat-dialog-close]="true">
+                Create
+            </button>
+        </mat-dialog-actions>
+    `,
+    styleUrls: ['./new-message.component.scss']
 })
-export class NewMessageComponent {
+export class NewMessageComponent implements OnInit {
+    public componentTypeNames: string[];
+    public node: CodeNode;
+    @ViewChild('nodeEditor') public nodeEditor: NodeEditorComponent;
 
-  separatorKeysCodes = [ENTER, COMMA];
-
-  contacts: string[] = [
-    'Austin Mcdaniel',
-    'Jeremy Elbourn',
-    'Jules Kremer',
-    'Brad Green',
-    'Tina Gao'
-  ];
-  recipients: string[] = [];
-  subjectCtrl = new FormControl();
-  bodyCtrl = new FormControl();
-  recipientsCtrl = new FormControl();
-  filteredContacts: Observable<any[]>;
-
-  @ViewChild('recipientInput') recipientInput;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    if (data.to && data.subject) {
-      this.recipients.push(data.to);
-      this.subjectCtrl.setValue(data.subject);
+    constructor(@Inject(MAT_DIALOG_DATA) public data: {alignment: keyof INodeTypes},
+                typesService: NodeTypesService) {
+        this.componentTypeNames = typesService.getTypeNames(data.alignment);
     }
 
-    this.filteredContacts = this.recipientsCtrl.valueChanges
-        .startWith(null)
-        .map(contact => contact ? this.filterContacts(contact) : this.contacts.slice());
-  }
-
-  addRecipient(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add our person
-    if ((value || '').trim()) {
-      this.recipients.push(value.trim());
+    public ngOnInit() {
+        this.node = {} as CodeNode;
     }
 
-    // Reset the input value
-    if (input) {
-      input.value = '';
+    public onChange(selected: string) {
+        this.nodeEditor.node = this.node = {
+            type: (selected || '').toString(),
+            desc: this.node.desc
+        } as CodeNode;
+
+        this.nodeEditor.ngOnInit();
     }
-  }
-
-  removeRecipient(recipient: string): void {
-    const index = this.recipients.indexOf(recipient);
-    if (index >= 0) {
-      this.recipients.splice(index, 1);
-    }
-  }
-
-  filterContacts(name: string): string[] {
-    return this.contacts.filter(contact =>
-      contact.toLowerCase().indexOf(name.toLowerCase()) === 0);
-  }
-
-  onOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    this.recipients.push(event.option.value);
-    this.recipientInput.nativeElement.value = '';
-  }
-
 }

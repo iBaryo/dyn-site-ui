@@ -73,8 +73,17 @@ import {IAlignments, NodeTypesService} from './node-types.service';
                     </div>
                 </mat-toolbar>
                 <content>
-                    <app-nodes-list *ngIf="showFeatures" [title]="'Features'" [nodes]="alignedNodes.features"></app-nodes-list>
-                    <app-nodes-list [title]="'Backend'" [nodes]="alignedNodes.backend"></app-nodes-list>
+                    <app-nodes-list 
+                            *ngIf="showFeatures" 
+                            [title]="'Features'" 
+                            [nodes]="alignedNodes.features"
+                            [alignment]="'features'">
+                    </app-nodes-list>
+                    <app-nodes-list 
+                            [title]="'Backend'" 
+                            [nodes]="alignedNodes.backend"
+                            [alignment]="'backend'">
+                    </app-nodes-list>
                 </content>
             </div>
         </mat-sidenav-container>
@@ -90,7 +99,7 @@ export class AppComponent {
     constructor(private snackBar: MatSnackBar,
                 private dialog: MatDialog,
                 nodesService: NodesService,
-                nodeTypesService: NodeTypesService) {
+                public nodeTypesService: NodeTypesService) {
         const codeNodes = nodesService.getNodes().code;
         this.alignedNodes = nodeTypesService.align(codeNodes);
         this.showFeatures = nodeTypesService.hasFeatures();
