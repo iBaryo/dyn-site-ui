@@ -7,13 +7,14 @@ import {
     MatSidenavModule, MatToolbarModule, MatButtonModule, MatIconModule,
     MATERIAL_COMPATIBILITY_MODE, MatCardModule, MatMenuModule, MatTooltipModule,
     MatDialogModule, MatChipsModule, MatAutocompleteModule, MatFormFieldModule,
-    MatInputModule, MatSnackBarModule, MatSlideToggleModule, MatExpansionModule
+    MatInputModule, MatSnackBarModule, MatSlideToggleModule, MatExpansionModule,
+    MatSelectModule
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {AppComponent} from './app.component';
 import {NodeComponent} from './node/node.component';
-import {NewMessageComponent} from './new-message/new-message.component';
+import {NewNodeComponent} from './new-node/new-node.component';
 import {routes} from './app.routes';
 import {NodesService} from './nodes.service';
 import {NodeTypesService} from './node-types.service';
@@ -23,17 +24,19 @@ import { CodeEditorComponent } from './editors/code-editor/code-editor.component
 import {MonacoEditorModule} from 'ngx-monaco-editor';
 import { NodesListComponent } from './nodes-list/nodes-list.component';
 import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-editor.component';
+import { NodeEditorComponent } from './node-editor/node-editor.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NodeComponent,
-        NewMessageComponent,
+        NewNodeComponent,
         EditorHostDirective,
         ErrorEditorComponent,
         CodeEditorComponent,
         NodesListComponent,
-        HtmlPageEditorComponent
+        HtmlPageEditorComponent,
+        NodeEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -59,10 +62,11 @@ import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-ed
         MatSnackBarModule,
         MatExpansionModule,
         MatSlideToggleModule,
+        MatSelectModule,
         MonacoEditorModule // use forRoot() in main app module only.
     ],
     entryComponents: [
-        NewMessageComponent,
+        NewNodeComponent,
         ErrorEditorComponent,
         CodeEditorComponent,
         HtmlPageEditorComponent

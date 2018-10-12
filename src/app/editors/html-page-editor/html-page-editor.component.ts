@@ -14,6 +14,8 @@ export class HtmlPageEditorComponent implements OnInit, INodeEditor<any> {
   constructor() { }
 
   ngOnInit() {
+      if (!this.node.head) this.node.head = [];
+      if (!this.node.body) this.node.body = [];
   }
 
 }

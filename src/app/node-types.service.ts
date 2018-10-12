@@ -169,4 +169,8 @@ fetch('${this._endpointName}'+location.search)
     public hasFeatures() {
         return this._types.features.size > 0;
     }
+
+    public getTypeNames(alignment: keyof INodeTypes) {
+        return Array.from(this._types[alignment].keys());
+    }
 }

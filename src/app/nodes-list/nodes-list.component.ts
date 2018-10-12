@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CodeNode} from 'express-dynamic-components';
-import {NewMessageComponent} from '../new-message/new-message.component';
+import {NewNodeComponent} from '../new-node/new-node.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
+import {INodeTypes} from '../node-types.service';
 
 @Component({
   selector: 'app-nodes-list',
@@ -11,9 +12,10 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 export class NodesListComponent implements OnInit {
   @Input()
   public title: string;
-
   @Input()
   public nodes: CodeNode[];
+  @Input()
+  public alignment: keyof INodeTypes;
   constructor(private snackBar: MatSnackBar,
               private dialog: MatDialog) { }
 
@@ -28,15 +30,17 @@ export class NodesListComponent implements OnInit {
         });
     }
 
-    onNewComponent(data: any = {}): void {
-        const dialogRef = this.dialog.open(NewMessageComponent, {
+    onNewComponent(): void {
+        const dialogRef = this.dialog.open(NewNodeComponent, {
             width: '75%',
             panelClass: 'new-message-dialog',
-            data
+            data: {alignment: this.alignment}
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
+                this.nodes.push(dialogRef.componentInstance.node);
+
                 this.snackBar.open('Component added', null, {
                     duration: 2000
                 });

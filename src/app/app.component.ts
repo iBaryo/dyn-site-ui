@@ -1,7 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {CodeNode, IAppComponentsConfig} from 'express-dynamic-components';
-import {NewMessageComponent} from './new-message/new-message.component';
 import {NodesService} from './nodes.service';
 import {IAlignments, NodeTypesService} from './node-types.service';
 
@@ -73,9 +72,17 @@ import {IAlignments, NodeTypesService} from './node-types.service';
                     </div>
                 </mat-toolbar>
                 <content>
-                    <app-nodes-list *ngIf="showFeatures" [title]="'Features'"
-                                    [nodes]="alignedNodes.features"></app-nodes-list>
-                    <app-nodes-list [title]="'Backend'" [nodes]="alignedNodes.backend"></app-nodes-list>
+                    <app-nodes-list 
+                            *ngIf="showFeatures" 
+                            [title]="'Features'" 
+                            [nodes]="alignedNodes.features"
+                            [alignment]="'features'">
+                    </app-nodes-list>
+                    <app-nodes-list 
+                            [title]="'Backend'" 
+                            [nodes]="alignedNodes.backend"
+                            [alignment]="'backend'">
+                    </app-nodes-list>
                 </content>
                 <div class="global-actions">
                     <button
@@ -113,14 +120,14 @@ export class AppComponent {
     constructor(private snackBar: MatSnackBar,
                 private dialog: MatDialog,
                 private _nodesService: NodesService,
-                private _nodeTypesService: NodeTypesService) {
-        this.showFeatures = this._nodeTypesService.hasFeatures();
+                public nodeTypesService: NodeTypesService) {
+        this.showFeatures = this.nodeTypesService.hasFeatures();
         this.showNodes(this._nodesService.getInitCmpConfig());
     }
 
     private showNodes(cmpConfig: IAppComponentsConfig) {
         const codeNodes = cmpConfig.code;
-        this.alignedNodes = this._nodeTypesService.align(codeNodes);
+        this.alignedNodes = this.nodeTypesService.align(codeNodes);
     }
 
     private getCompConfig() {
