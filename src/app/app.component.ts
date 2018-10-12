@@ -1,6 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {CodeNode} from 'express-dynamic-components';
+import {CodeNode, IAppComponentsConfig} from 'express-dynamic-components';
 import {NewMessageComponent} from './new-message/new-message.component';
 import {NodesService} from './nodes.service';
 import {IAlignments, NodeTypesService} from './node-types.service';
@@ -73,9 +73,32 @@ import {IAlignments, NodeTypesService} from './node-types.service';
                     </div>
                 </mat-toolbar>
                 <content>
-                    <app-nodes-list *ngIf="showFeatures" [title]="'Features'" [nodes]="alignedNodes.features"></app-nodes-list>
+                    <app-nodes-list *ngIf="showFeatures" [title]="'Features'"
+                                    [nodes]="alignedNodes.features"></app-nodes-list>
                     <app-nodes-list [title]="'Backend'" [nodes]="alignedNodes.backend"></app-nodes-list>
                 </content>
+                <div class="global-actions">
+                    <button
+                            mat-fab
+                            color="accent"
+                            class="new-fab"
+                            (click)="export()"
+                            matTooltip="export"
+                            matTooltipPosition="above">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                    <button
+                            type="file"
+                            mat-fab
+                            color="none"
+                            class="new-fab"
+                            (click)="filePicker.click()"
+                            matTooltip="import"
+                            matTooltipPosition="above">
+                        <mat-icon>cloud_upload</mat-icon>
+                    </button>
+                    <input #filePicker type="file" style="display: none" accept="application/json" (change)="import($event)"/>
+                </div>
             </div>
         </mat-sidenav-container>
     `,
@@ -89,10 +112,39 @@ export class AppComponent {
 
     constructor(private snackBar: MatSnackBar,
                 private dialog: MatDialog,
-                nodesService: NodesService,
-                nodeTypesService: NodeTypesService) {
-        const codeNodes = nodesService.getNodes().code;
-        this.alignedNodes = nodeTypesService.align(codeNodes);
-        this.showFeatures = nodeTypesService.hasFeatures();
+                private _nodesService: NodesService,
+                private _nodeTypesService: NodeTypesService) {
+        this.showFeatures = this._nodeTypesService.hasFeatures();
+        this.showNodes(this._nodesService.getInitCmpConfig());
+    }
+
+    private showNodes(cmpConfig: IAppComponentsConfig) {
+        const codeNodes = cmpConfig.code;
+        this.alignedNodes = this._nodeTypesService.align(codeNodes);
+    }
+
+    private getCompConfig() {
+        return {
+            config: [],
+            code: Object.values(this.alignedNodes).reduce((res, cur) => res.concat(cur), [])
+        };
+    }
+
+    public export() {
+        this._nodesService.exportToFile(this.getCompConfig());
+    }
+
+    public async import(event) {
+        const file = (event.srcElement as HTMLInputElement).files[0];
+        if (file) {
+            try {
+                const cmpConfig = await this._nodesService.importFromFile(file);
+                this.showNodes(cmpConfig);
+            } catch (e) {
+                this.snackBar.open('Invalid config file', null, {
+                    duration: 2000
+                });
+            }
+        }
     }
 }

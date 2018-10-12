@@ -1,5 +1,6 @@
 import {IAppComponentsConfig, CodeNode} from 'express-dynamic-components';
 import {Injectable} from '@angular/core';
+import {cmp} from "semver";
 
 @Injectable()
 export class NodesService {
@@ -7,7 +8,7 @@ export class NodesService {
     constructor() {
     }
 
-    public getNodes() {
+    public getInitCmpConfig() {
         return {
             config: [],
             code: [
@@ -45,5 +46,40 @@ export class NodesService {
                 }
             ]
         } as IAppComponentsConfig;
+    }
+
+    public exportToFile(compConfig: IAppComponentsConfig, fileName = 'compConfig.json') {
+        const jsonStr = JSON.stringify(compConfig, undefined, 4);
+
+        const element = document.createElement('a');
+        element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(jsonStr)}`);
+        element.setAttribute('download', fileName);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    public importFromFile(file: File) {
+        return new Promise<IAppComponentsConfig>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = error => reject(error);
+            reader.onload = (event: Event & { target: { result?: string } }) => {
+                try {
+                    const cmpConfig = JSON.parse(event.target.result) as IAppComponentsConfig;
+                    this.validateCmpConfig(cmpConfig);
+                    resolve(cmpConfig);
+                } catch (e) {
+                    reject(e);
+                }
+            };
+            reader.readAsBinaryString(file);
+        });
+    }
+
+    private validateCmpConfig(cmpConfig: IAppComponentsConfig) {
+        if (!cmpConfig || !cmpConfig.code || !(cmpConfig.code instanceof Array)) {
+            throw new Error('bad config');
+        }
     }
 }
