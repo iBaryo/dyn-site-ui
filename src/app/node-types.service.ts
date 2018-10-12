@@ -5,18 +5,9 @@ import {
     backendFactory,
     frontendFactory,
     CodeFactory,
-    ServerCodeComponent,
-    JsonEndpointComponent,
-    HtmlPageComponent,
-    DomComponent,
-    ScriptTagComponent,
-    ScopedScriptComponent,
-    FeatureComponent,
-    JsonEndpointNode
 } from 'express-dynamic-components';
 import {INodeEditor} from './editors/interfaces';
-import {CodeEditorComponent, ICodeEditorOptions} from './editors/code-editor/code-editor.component';
-import {HtmlPageEditorComponent} from './editors/html-page-editor/html-page-editor.component';
+import {setupTypes, ITypeContainer} from "./componentsSetup";
 
 export interface IEditorInfo<T> {
     editorType: Type<INodeEditor<T>>;
@@ -38,7 +29,7 @@ export interface INodeTypes extends IAlignments<Map<string, INodeTypeInfo>> {
 }
 
 @Injectable()
-export class NodeTypesService {
+export class NodeTypesService implements ITypeContainer {
     private readonly _types: INodeTypes = {
         features: new Map<string, INodeTypeInfo>(),
         backend: new Map<string, INodeTypeInfo>(),
@@ -46,61 +37,7 @@ export class NodeTypesService {
     };
 
     constructor() {
-        this.add('backend', ServerCodeComponent, CodeEditorComponent, {
-            defaultTemplate: `async (app, config) => {\n\t\n}`
-        } as ICodeEditorOptions);
-        this.add('backend', JsonEndpointComponent, CodeEditorComponent, {
-            defaultTemplate: `async (req, config) => {\n\t\n}`
-        } as ICodeEditorOptions);
-        this.add('backend', HtmlPageComponent, HtmlPageEditorComponent);
-
-        this.add('frontend', DomComponent, CodeEditorComponent, {
-            defaultTemplate: `<div></div>`,
-            language: 'html'
-        } as ICodeEditorOptions);
-        this.add('frontend', ScriptTagComponent, CodeEditorComponent, {
-            defaultTemplate: 'console.log("hello world");'
-        } as ICodeEditorOptions);
-        this.add('frontend', ScopedScriptComponent, CodeEditorComponent, {
-            defaultTemplate: `async (config) => {\n\t\n}`
-        } as ICodeEditorOptions);
-
-        this.add('features', class MyFeature extends FeatureComponent {
-            public static get typeName() {
-                return 'my-feature';
-            }
-
-            private readonly _endpointName = 'myFeatureEndpoint';
-
-            public get backend() {
-                return [
-                    {
-                        type: JsonEndpointComponent.typeName,
-                        desc: 'my-feature endpoint',
-                        name: this._endpointName,
-                        code: async (req, config) => ({myFeature: true, query: req.query})
-                    } as JsonEndpointNode
-                ];
-            }
-
-            public get frontend() {
-                return {
-                    defaultPage: {
-                        head: [],
-                        body: [
-                            {
-                                type: ScriptTagComponent.typeName,
-                                desc: 'my-feature script',
-                                code: `
-fetch('${this._endpointName}'+location.search)
-.then(r => r.json())
-.then(r => window.testResults.featureEndpointResult = r);`
-                            }
-                        ]
-                    }
-                };
-            }
-        }, undefined);
+        setupTypes(this);
     }
 
     public add(alignment: keyof INodeTypes, cmpType: ICodeComponentType<any>, editorType: Type<any>, editorOptions?: any) {
