@@ -143,7 +143,7 @@ export class AppComponent {
 
     private getCompConfig() {
         return {
-            config: [],
+            config: [this.configNode],
             code: Object.values(this.alignedNodes).reduce((res, cur) => res.concat(cur), [])
         };
     }
