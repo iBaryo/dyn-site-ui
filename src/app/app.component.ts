@@ -1,8 +1,9 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {CodeNode, IAppComponentsConfig} from 'express-dynamic-components';
+import {CodeNode, ConfigNode, IAppComponentsConfig} from 'express-dynamic-components';
 import {NodesService} from './nodes.service';
 import {IAlignments, NodeTypesService} from './node-types.service';
+import {ConfigComponent} from './config/config.component';
 
 @Component({
     selector: 'app-root',
@@ -72,19 +73,27 @@ import {IAlignments, NodeTypesService} from './node-types.service';
                     </div>
                 </mat-toolbar>
                 <content>
-                    <app-nodes-list 
-                            *ngIf="showFeatures" 
-                            [title]="'Features'" 
+                    <app-nodes-list
+                            *ngIf="showFeatures"
+                            [title]="'Features'"
                             [nodes]="alignedNodes.features"
                             [alignment]="'features'">
                     </app-nodes-list>
-                    <app-nodes-list 
-                            [title]="'Backend'" 
+                    <app-nodes-list
+                            [title]="'Backend'"
                             [nodes]="alignedNodes.backend"
                             [alignment]="'backend'">
                     </app-nodes-list>
                 </content>
                 <div class="global-actions">
+                    <button
+                            mat-fab
+                            class="new-fab"
+                            (click)="showConfigDialog()"
+                            matTooltip="configuration"
+                            matTooltipPosition="above">
+                        <mat-icon>list</mat-icon>
+                    </button>
                     <button
                             mat-fab
                             color="accent"
@@ -115,6 +124,7 @@ import {IAlignments, NodeTypesService} from './node-types.service';
 export class AppComponent {
 
     public alignedNodes: IAlignments<CodeNode[]>;
+    public configNode: ConfigNode;
     public showFeatures = false;
 
     constructor(private snackBar: MatSnackBar,
@@ -126,6 +136,7 @@ export class AppComponent {
     }
 
     private showNodes(cmpConfig: IAppComponentsConfig) {
+        this.configNode = Object.assign({}, ...cmpConfig.config);
         const codeNodes = cmpConfig.code;
         this.alignedNodes = this.nodeTypesService.align(codeNodes);
     }
@@ -153,5 +164,27 @@ export class AppComponent {
                 });
             }
         }
+    }
+
+    public showConfigDialog() {
+        const dialogRef = this.dialog.open(ConfigComponent, {
+            width: '30%',
+            panelClass: 'new-message-dialog',
+            data: this.configNode
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const newConfig = dialogRef.componentInstance.configNode
+
+                if (newConfig) {
+                    this.configNode =  newConfig;
+
+                    this.snackBar.open('Config updated', null, {
+                        duration: 2000
+                    });
+                }
+            }
+        });
     }
 }

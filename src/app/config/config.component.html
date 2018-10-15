@@ -1,0 +1,14 @@
+<div class="new-message-toolbar" mat-dialog-title>
+    <mat-icon>list</mat-icon> Config
+    <button mat-icon-button mat-dialog-close>
+        <mat-icon>clear</mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="new-message-content">
+    <ngx-monaco-editor style="margin-top: 10px" [options]="options" [(ngModel)]="configString"></ngx-monaco-editor>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true">
+        Save
+    </button>
+</mat-dialog-actions>
