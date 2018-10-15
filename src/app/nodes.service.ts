@@ -10,7 +10,14 @@ export class NodesService {
 
     public getInitCmpConfig() {
         return {
-            config: [],
+            config: [
+                {
+                    key1: 'val1'
+                },
+                {
+                    key2: 'val2'
+                }
+            ],
             code: [
                 {
                     type: 'server',
@@ -20,11 +27,13 @@ export class NodesService {
                 {
                     type: 'endpoint',
                     desc: 'serving data',
+                    name: 'endpoint1',
                     code: ''
                 },
                 {
                     type: 'html',
                     desc: 'a nice page',
+                    name: 'myPsge.html',
                     head: [
                         {
                             type: 'dom',

@@ -25,6 +25,8 @@ import {MonacoEditorModule} from 'ngx-monaco-editor';
 import { NodesListComponent } from './nodes-list/nodes-list.component';
 import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-editor.component';
 import { NodeEditorComponent } from './node-editor/node-editor.component';
+import { ConfigComponent } from './config/config.component';
+import { EndpointEditorComponent } from './editors/endpoint-editor/endpoint-editor.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +38,9 @@ import { NodeEditorComponent } from './node-editor/node-editor.component';
         CodeEditorComponent,
         NodesListComponent,
         HtmlPageEditorComponent,
-        NodeEditorComponent
+        NodeEditorComponent,
+        ConfigComponent,
+        EndpointEditorComponent
     ],
     imports: [
         BrowserModule,
@@ -69,7 +73,9 @@ import { NodeEditorComponent } from './node-editor/node-editor.component';
         NewNodeComponent,
         ErrorEditorComponent,
         CodeEditorComponent,
-        HtmlPageEditorComponent
+        EndpointEditorComponent,
+        HtmlPageEditorComponent,
+        ConfigComponent
     ],
     providers: [
         {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},

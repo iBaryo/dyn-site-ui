@@ -1,3 +1,6 @@
+<mat-form-field class="subject-input">
+    <input matInput placeholder="Page Path" [(ngModel)]="node.name" />
+</mat-form-field>
 <app-nodes-list [title]="'head'"
                 [nodes]="node.head"
                 [alignment]="'frontend'">

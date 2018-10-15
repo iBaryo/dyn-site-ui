@@ -9,6 +9,7 @@ import {Type} from '@angular/core';
 import {INodeTypes} from './node-types.service';
 import {CodeEditorComponent, ICodeEditorOptions} from './editors/code-editor/code-editor.component';
 import {HtmlPageEditorComponent} from './editors/html-page-editor/html-page-editor.component';
+import {EndpointEditorComponent} from "./editors/endpoint-editor/endpoint-editor.component";
 
 export interface ITypeContainer {
     add(alignment: keyof INodeTypes, cmpType: ICodeComponentType<any>, editorType: Type<any>, editorOptions?: any): void;
@@ -18,7 +19,7 @@ export function setupTypes(container: ITypeContainer) {
     container.add('backend', ServerCodeComponent, CodeEditorComponent, {
         defaultTemplate: `async (app, config) => {\n\t\n}`
     } as ICodeEditorOptions);
-    container.add('backend', JsonEndpointComponent, CodeEditorComponent, {
+    container.add('backend', JsonEndpointComponent, EndpointEditorComponent, {
         defaultTemplate: `async (req, config) => {\n\t\n}`
     } as ICodeEditorOptions);
     container.add('backend', HtmlPageComponent, HtmlPageEditorComponent);

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {INodeEditor} from '../interfaces';
 import {CodeNode} from 'express-dynamic-components';
 
@@ -14,7 +14,9 @@ export interface ICodeEditorOptions {
     styleUrls: ['./code-editor.component.scss']
 })
 export class CodeEditorComponent implements OnInit, INodeEditor<ICodeEditorOptions> {
+    @Input()
     public node: CodeNode;
+    @Input()
     public options: ICodeEditorOptions;
 
     constructor() {
