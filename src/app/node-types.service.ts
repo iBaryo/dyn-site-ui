@@ -16,7 +16,6 @@ export interface IEditorInfo<T> {
 
 export interface INodeTypeInfo extends IEditorInfo<any> {
     alignment: keyof INodeTypes;
-    componentType: ICodeComponentType<any>;
 }
 
 export interface IAlignments<T> {
@@ -53,7 +52,6 @@ export class NodeTypesService implements ITypeContainer {
 
         this._types[alignment].set(componentType.typeName, {
             alignment,
-            componentType,
             editorType,
             editorOptions
         });
