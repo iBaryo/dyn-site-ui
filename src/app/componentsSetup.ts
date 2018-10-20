@@ -9,7 +9,8 @@ import {Type} from '@angular/core';
 import {INodeTypes} from './node-types.service';
 import {CodeEditorComponent, ICodeEditorOptions} from './editors/code-editor/code-editor.component';
 import {HtmlPageEditorComponent} from './editors/html-page-editor/html-page-editor.component';
-import {EndpointEditorComponent} from "./editors/endpoint-editor/endpoint-editor.component";
+import {EndpointEditorComponent} from './editors/endpoint-editor/endpoint-editor.component';
+import {GigyaApi, GigyaWebSDK} from '../custom-components';
 
 export interface ITypeContainer {
     add(alignment: keyof INodeTypes, cmpType: ICodeComponentType<any>, editorType: Type<any>, editorOptions?: any): void;
@@ -71,4 +72,20 @@ fetch('${this._endpointName}'+location.search)
             };
         }
     }, undefined);
+
+    setupCustomTypes(container);
+}
+
+function setupCustomTypes(container: ITypeContainer) {
+    container.add('backend', GigyaApi, CodeEditorComponent, {
+            defaultTemplate: `async (gigyaApi, config) => {
+    
+}`
+    } as ICodeEditorOptions);
+
+    container.add('frontend', GigyaWebSDK, CodeEditorComponent, {
+        defaultTemplate: `(websdk, config) => {
+            
+}`
+    } as ICodeEditorOptions);
 }
