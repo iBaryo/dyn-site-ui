@@ -36,56 +36,15 @@ export function setupTypes(container: ITypeContainer) {
         defaultTemplate: `async (config) => {\n\t\n}`
     } as ICodeEditorOptions);
 
-    container.add('features', class MyFeature extends FeatureComponent {
-        public static get typeName() {
-            return 'my-feature';
-        }
-
-        private readonly _endpointName = 'myFeatureEndpoint';
-
-        public get backend() {
-            return [
-                {
-                    type: JsonEndpointComponent.typeName,
-                    desc: 'my-feature endpoint',
-                    name: this._endpointName,
-                    code: async (req, config) => ({myFeature: true, query: req.query})
-                } as JsonEndpointNode
-            ];
-        }
-
-        public get frontend() {
-            return {
-                defaultPage: {
-                    head: [],
-                    body: [
-                        {
-                            type: ScriptTagComponent.typeName,
-                            desc: 'my-feature script',
-                            code: `
-fetch('${this._endpointName}'+location.search)
-.then(r => r.json())
-.then(r => window.testResults.featureEndpointResult = r);`
-                        }
-                    ]
-                }
-            };
-        }
-    }, undefined);
-
     setupCustomTypes(container);
 }
 
 function setupCustomTypes(container: ITypeContainer) {
     container.add('backend', GigyaApi, CodeEditorComponent, {
-            defaultTemplate: `async (gigyaApi, config) => {
-    
-}`
+            defaultTemplate: `async (gigyaApi, config) => {\n\tgigyaApi.accounts.getAccountInfo({\n\t\tcallback: console.log\n\t});\n}`
     } as ICodeEditorOptions);
 
     container.add('frontend', GigyaWebSDK, CodeEditorComponent, {
-        defaultTemplate: `(websdk, config) => {
-            
-}`
+        defaultTemplate: `(websdk, config) => {\n\twebsdk.accounts.getAccountInfo({\n\t\tcallback: console.log\n\t});\n}`
     } as ICodeEditorOptions);
 }
