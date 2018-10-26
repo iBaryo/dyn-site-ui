@@ -4,6 +4,7 @@ import {CodeNode, ConfigNode, IAppComponentsConfig} from 'express-dynamic-compon
 import {NodesService} from './nodes.service';
 import {IAlignments, NodeTypesService} from './node-types.service';
 import {ConfigComponent} from './config/config.component';
+import {ConfigService} from './config.service';
 
 @Component({
     selector: 'app-root',
@@ -124,26 +125,26 @@ import {ConfigComponent} from './config/config.component';
 export class AppComponent {
 
     public alignedNodes: IAlignments<CodeNode[]>;
-    public configNode: ConfigNode;
     public showFeatures = false;
 
     constructor(private snackBar: MatSnackBar,
                 private dialog: MatDialog,
                 private _nodesService: NodesService,
-                public nodeTypesService: NodeTypesService) {
+                public nodeTypesService: NodeTypesService,
+                public configService: ConfigService) {
         this.showFeatures = this.nodeTypesService.hasFeatures();
         this.showNodes(this._nodesService.getInitCmpConfig());
     }
 
     private showNodes(cmpConfig: IAppComponentsConfig) {
-        this.configNode = Object.assign({}, ...cmpConfig.config);
+        this.configService.update(Object.assign({}, ...cmpConfig.config));
         const codeNodes = cmpConfig.code;
         this.alignedNodes = this.nodeTypesService.align(codeNodes);
     }
 
     private getCompConfig() {
         return {
-            config: [this.configNode],
+            config: [this.configService.get()],
             code: Object.values(this.alignedNodes).reduce((res, cur) => res.concat(cur), [])
         };
     }
@@ -170,20 +171,20 @@ export class AppComponent {
         const dialogRef = this.dialog.open(ConfigComponent, {
             width: '30%',
             panelClass: 'new-message-dialog',
-            data: this.configNode
+            data: this.configService.get()
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                const newConfig = dialogRef.componentInstance.configNode
+            if (!result) {
+                return;
+            }
+            const newConfig = dialogRef.componentInstance.configNode;
+            if (newConfig) {
+                this.configService.update(newConfig);
 
-                if (newConfig) {
-                    this.configNode =  newConfig;
-
-                    this.snackBar.open('Config updated', null, {
-                        duration: 2000
-                    });
-                }
+                this.snackBar.open('Config updated', null, {
+                    duration: 2000
+                });
             }
         });
     }

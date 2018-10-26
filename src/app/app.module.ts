@@ -27,6 +27,7 @@ import { HtmlPageEditorComponent } from './editors/html-page-editor/html-page-ed
 import { NodeEditorComponent } from './node-editor/node-editor.component';
 import { ConfigComponent } from './config/config.component';
 import { EndpointEditorComponent } from './editors/endpoint-editor/endpoint-editor.component';
+import {ConfigService} from './config.service';
 
 @NgModule({
     declarations: [
@@ -80,7 +81,8 @@ import { EndpointEditorComponent } from './editors/endpoint-editor/endpoint-edit
     providers: [
         {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},
         NodesService,
-        NodeTypesService
+        NodeTypesService,
+        ConfigService
     ],
     bootstrap: [AppComponent]
 })
