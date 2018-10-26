@@ -128,7 +128,6 @@ export class AppComponent {
     public showFeatures = false;
 
     constructor(private snackBar: MatSnackBar,
-                private dialog: MatDialog,
                 private _nodesService: NodesService,
                 public nodeTypesService: NodeTypesService,
                 public configService: ConfigService) {
@@ -137,7 +136,7 @@ export class AppComponent {
     }
 
     private showNodes(cmpConfig: IAppComponentsConfig) {
-        this.configService.update(Object.assign({}, ...cmpConfig.config));
+        this.configService.replace(Object.assign({}, ...cmpConfig.config));
         const codeNodes = cmpConfig.code;
         this.alignedNodes = this.nodeTypesService.align(codeNodes);
     }
@@ -168,24 +167,6 @@ export class AppComponent {
     }
 
     public showConfigDialog() {
-        const dialogRef = this.dialog.open(ConfigComponent, {
-            width: '30%',
-            panelClass: 'new-message-dialog',
-            data: this.configService.get()
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (!result) {
-                return;
-            }
-            const newConfig = dialogRef.componentInstance.configNode;
-            if (newConfig) {
-                this.configService.update(newConfig);
-
-                this.snackBar.open('Config updated', null, {
-                    duration: 2000
-                });
-            }
-        });
+        this.configService.showDialog();
     }
 }
