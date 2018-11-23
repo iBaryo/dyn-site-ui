@@ -1,6 +1,7 @@
 import Gigya from 'gigya';
 import {IScript, ScopedScriptComponent, ScriptTagComponent, ServerCodeComponent} from 'express-dynamic-components';
 import {ScriptGeneratorFn, ScriptNode} from 'express-dynamic-components/src/code-components/frontend/ScriptTagComponent';
+import {DefaultFrontendReducer} from 'express-dynamic-components/src/reducers/DefaultFrontendReducer';
 
 export class GigyaApi extends ServerCodeComponent {
     public static get typeName() {
@@ -10,6 +11,7 @@ export class GigyaApi extends ServerCodeComponent {
     public run(options: any, fn: any) {
         return super.run(options, async (app: Express.Application & { gigya?: Gigya }, config) => {
             if (!app.gigya) {
+                console.log(`creating gigya api. apiKey: ${config.apiKey}`);
                 app.gigya = new Gigya(config.apiKey, config.dataCenter, config.userKey, config.secret);
             }
             fn(app.gigya, config);
@@ -55,25 +57,31 @@ export class GigyaWebSDK extends GigyaWebSDKScript {
         return `gigya-websdk`;
     }
 
-    public async run(options: ScriptNode, fn) {
+    public forReducer() {
         const info = this.getWebSDKInfo();
-        const activateFnString = `fn(${this.getScopeArgs().join(',')})`;
-        return super.run(options, `var fn = ${fn.toString()};
-        if (window.gigya && window.gigya.isGigya) {
-            ${activateFnString};
-        }
-        else {
-            var cb = window.onGigyaServiceReady;
-            window.onGigyaServiceReady = () => {
-                if (cb) cb();
-                ${activateFnString};
-            };
+        return class WebSDKReducer extends DefaultFrontendReducer {
+            protected async reduceFn(res: string, cur: string) {
+                // todo: remove script tags only from the begining and the end
+                return super.reduceFn(res, cur.replace(/<[^>]*>/gi, ''));
+            }
 
-            var gScript = document.createElement('script');
-            gScript.src = 'https://cdns.${info.domain}/js/gigya.js?apiKey=${info.apiKey}'
-            document.head.appendChild(gScript);
-        }
-        `);
+            protected postProcess(res: string): any {
+                return `<!-- start of websdk script -->
+<script>
+    var cb = window.onGigyaServiceReady;
+    window.onGigyaServiceReady = () => {
+        if (cb) cb();
+        ${res}
+    };
+
+    var gScript = document.createElement('script');
+    gScript.src = 'https://cdns.${info.domain}/js/gigya.js?apiKey=${info.apiKey}';
+    document.head.appendChild(gScript);
+</script>
+<!-- end of websdk script -->`;
+            }
+
+        };
     }
     private getWebSDKInfo(config = this.context.config) {
         let domain: string;

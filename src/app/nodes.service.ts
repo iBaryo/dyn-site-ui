@@ -12,33 +12,41 @@ export class NodesService {
         return {
             config: [
                 {
-                    key1: 'val1'
-                },
-                {
-                    key2: 'val2'
+                    apiKey: '3_9h_k6iPEhKZQPNFRoDmkQGzjZtP6Omnby1yenwTilMII7pG6BBAqIEC0fitqEirM',
+                    dataCenter: 'us1',
+                    userKey: 'AMPGSznzSCGg',
+                    secret: 'FIxkGx2qCzxEMCQy6wqVQ30uBKrQPJXf'
                 }
             ],
             code: [
                 {
                     type: 'server',
                     desc: 'setup of the server',
-                    code: ''
+                    code: '() => console.log(`hello world`);'
                 },
                 {
                     type: 'endpoint',
                     desc: 'serving data',
                     name: 'endpoint1',
-                    code: ''
+                    code: '() => ({success: true})'
+                },
+                {
+                    type: 'gigya-api',
+                    desc: 'gigya backend code',
+                    code: `async (gigya, config)=>{
+    const siteConfig = await gigya.admin.getSiteConfig({apiKey: config.apiKey});
+    console.log(\`base domain: \${siteConfig.baseDomain}\`);
+}`
                 },
                 {
                     type: 'html',
                     desc: 'a nice page',
-                    name: 'myPsge.html',
+                    name: 'myPage.html',
                     head: [
                         {
                             type: 'dom',
                             desc: 'a dom element',
-                            code: `<div></div>`
+                            code: `<title>My Page</title>`
                         }
                     ],
                     body: [
@@ -46,12 +54,13 @@ export class NodesService {
                             type: 'script',
                             desc: 'a dom script tag',
                             code: `async (config) => 'console.log("hello");'`
+                        },
+                        {
+                            type: 'gigya-websdk',
+                            desc: 'gigya websdk code',
+                            code: `async (websdk, config) => {\n\twebsdk.accounts.getAccountInfo({callback: console.log});\n}`
                         }
                     ]
-                },
-                {
-                    type: 'my-feature',
-                    desc: 'a cool feature'
                 }
             ]
         } as IAppComponentsConfig;
