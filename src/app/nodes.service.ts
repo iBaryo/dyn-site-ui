@@ -12,7 +12,7 @@ export class NodesService {
         return {
             config: [
                 {
-                    apiKey: '3_9h_k6iPEhKZQPNFRoDmkQGzjZtP6Omnby1yenwTilMII7pG6BBAqIEC0fitqEirM',
+                    apiKey: '3_qW1SAHjsrc_SM4QN7YIdaoQZcniGL_OZ_XZmHMkFo4ipSobO4hoADyPrOsqw59F7',
                     dataCenter: 'us1',
                     userKey: 'AMPGSznzSCGg',
                     secret: 'FIxkGx2qCzxEMCQy6wqVQ30uBKrQPJXf'

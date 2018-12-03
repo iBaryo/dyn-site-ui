@@ -62,7 +62,9 @@ export class GigyaWebSDK extends GigyaWebSDKScript {
         return class WebSDKReducer extends DefaultFrontendReducer {
             protected async reduceFn(res: string, cur: string) {
                 // todo: remove script tags only from the begining and the end
-                return super.reduceFn(res, cur.replace(/<[^>]*>/gi, ''));
+                cur = cur.replace(/<\/?script[^>]*>/gi, '')
+                    .replace(/<\!?--(.*)--[^>]*>/gi, '/*$1*/');
+                return super.reduceFn(res, cur);
             }
 
             protected postProcess(res: string): any {
@@ -71,7 +73,9 @@ export class GigyaWebSDK extends GigyaWebSDKScript {
     var cb = window.onGigyaServiceReady;
     window.onGigyaServiceReady = () => {
         if (cb) cb();
+        
         ${res}
+    
     };
 
     var gScript = document.createElement('script');
